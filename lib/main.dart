@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FocusNode _focusWeight;
   FocusNode _focusHeight;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   double imc = 0;
@@ -63,23 +64,31 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Form(
+              key: _formKey,
               child: Column(
                 children: [
                   TextFormField(
-                    focusNode: _focusWeight,
-                    controller: _weightController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Peso (Kg)'),
-                  ),
+                      focusNode: _focusWeight,
+                      controller: _weightController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: 'Peso (Kg)'),
+                      validator: (weight) {
+                        if (weight.isEmpty) return 'Preencha o valor do peso!';
+                        return null;
+                      }),
                   SizedBox(
                     height: 16.0,
                   ),
                   TextFormField(
-                    focusNode: _focusHeight,
-                    controller: _heightController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Altura (m)'),
-                  ),
+                      focusNode: _focusHeight,
+                      controller: _heightController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: 'Altura (m)'),
+                      validator: (height) {
+                        if (height.isEmpty)
+                          return 'Preencha o valor da altura!';
+                        return null;
+                      }),
                   SizedBox(
                     height: 16.0,
                   ),
@@ -112,14 +121,16 @@ class _HomePageState extends State<HomePage> {
                                       : Colors.white),
                               children: [
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     height: 32.0,
                                     alignment: Alignment.center,
                                     child: Text("< 18,5")),
                                 Container(
                                     height: 32.0,
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     child: Text("Abaixo do Peso")),
                               ]),
                           TableRow(
@@ -131,11 +142,13 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                     height: 32.0,
                                     alignment: Alignment.center,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     child: Text("18,5 - 24,9")),
                                 Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     height: 32.0,
                                     child: Text("Ideal"))
                               ]),
@@ -148,13 +161,15 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   height: 32.0,
                                   alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 4.0),
                                   child: Text("25,0 - 29,9"),
                                 ),
                                 Container(
                                     height: 32.0,
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     child: Text("Sobrepeso"))
                               ]),
                           TableRow(
@@ -166,12 +181,14 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                     height: 32.0,
                                     alignment: Alignment.center,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     child: Text("30,0 - 34,9")),
                                 Container(
                                     height: 32.0,
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     child: Text("Obesidade grau 1"))
                               ]),
                           TableRow(
@@ -182,29 +199,32 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Container(
                                     height: 32.0,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     alignment: Alignment.center,
                                     child: Text("35,0 - 39,9")),
                                 Container(
                                     height: 32.0,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     alignment: Alignment.centerLeft,
                                     child: Text("Obesidade severa grau 2"))
                               ]),
                           TableRow(
                               decoration: BoxDecoration(
-                                  color: imc > 40.0
-                                      ? Colors.green
-                                      : Colors.white),
+                                  color:
+                                      imc > 40.0 ? Colors.green : Colors.white),
                               children: [
                                 Container(
                                     height: 32.0,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     alignment: Alignment.center,
                                     child: Text("> 40")),
                                 Container(
                                     height: 32.0,
-                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     alignment: Alignment.centerLeft,
                                     child: Text("Obesidade móbida grau 3"))
                               ]),
@@ -222,12 +242,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _calculate() {
-    double weight = double.parse(_weightController.text);
-    double height = double.parse(_heightController.text);
+    if (_formKey.currentState.validate()) {
+      double weight = double.parse(_weightController.text);
+      double height = double.parse(_heightController.text);
 
-    setState(() {
-      imc = weight / (height * height);
-    });
+      setState(() {
+        imc = weight / (height * height);
+      });
+    }
   }
 
   void _refreshValues() {
@@ -237,6 +259,7 @@ class _HomePageState extends State<HomePage> {
       _heightController.text = "";
       _focusHeight.unfocus();
       imc = 0.0;
+      _formKey.currentState.reset();
     });
   }
 }
