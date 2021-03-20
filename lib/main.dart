@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
+  final PageController _pageController = PageController(initialPage: 0);
   double imc = 0;
 
   @override
@@ -101,138 +102,329 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            Text("Seu IMC é: ${imc.toStringAsFixed(2)}"),
             Expanded(
-              child: Container(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text("Seu IMC é: ${imc.toStringAsFixed(2)}"),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 0.0),
-                      child: Table(
-                        border: TableBorder.all(),
+              child: PageView(
+                controller: _pageController,
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TableRow(
-                              decoration: BoxDecoration(
-                                  color: imc != 0 && imc < 18.5
-                                      ? Colors.green
-                                      : Colors.white),
-                              children: [
-                                Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    height: 32.0,
-                                    alignment: Alignment.center,
-                                    child: Text("< 18,5")),
-                                Container(
-                                    height: 32.0,
-                                    alignment: Alignment.centerLeft,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    child: Text("Abaixo do Peso")),
-                              ]),
-                          TableRow(
-                              decoration: BoxDecoration(
-                                  color: imc >= 18.5 && imc < 24.9
-                                      ? Colors.green
-                                      : Colors.white),
-                              children: [
-                                Container(
-                                    height: 32.0,
-                                    alignment: Alignment.center,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    child: Text("18,5 - 24,9")),
-                                Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    height: 32.0,
-                                    child: Text("Ideal"))
-                              ]),
-                          TableRow(
-                              decoration: BoxDecoration(
-                                  color: imc >= 25.0 && imc < 29.9
-                                      ? Colors.green
-                                      : Colors.white),
-                              children: [
-                                Container(
-                                  height: 32.0,
-                                  alignment: Alignment.center,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 4.0),
-                                  child: Text("25,0 - 29,9"),
-                                ),
-                                Container(
-                                    height: 32.0,
-                                    alignment: Alignment.centerLeft,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    child: Text("Sobrepeso"))
-                              ]),
-                          TableRow(
-                              decoration: BoxDecoration(
-                                  color: imc >= 30.0 && imc < 34.9
-                                      ? Colors.green
-                                      : Colors.white),
-                              children: [
-                                Container(
-                                    height: 32.0,
-                                    alignment: Alignment.center,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    child: Text("30,0 - 34,9")),
-                                Container(
-                                    height: 32.0,
-                                    alignment: Alignment.centerLeft,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    child: Text("Obesidade grau 1"))
-                              ]),
-                          TableRow(
-                              decoration: BoxDecoration(
-                                  color: imc > 35.0 && imc < 39.9
-                                      ? Colors.green
-                                      : Colors.white),
-                              children: [
-                                Container(
-                                    height: 32.0,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    alignment: Alignment.center,
-                                    child: Text("35,0 - 39,9")),
-                                Container(
-                                    height: 32.0,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Obesidade severa grau 2"))
-                              ]),
-                          TableRow(
-                              decoration: BoxDecoration(
-                                  color:
-                                      imc > 40.0 ? Colors.green : Colors.white),
-                              children: [
-                                Container(
-                                    height: 32.0,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    alignment: Alignment.center,
-                                    child: Text("> 40")),
-                                Container(
-                                    height: 32.0,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4.0),
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Obesidade móbida grau 3"))
-                              ]),
+                          Text('O valor de referencia é para: '),
+                          Text(
+                            'Homens',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Stack(
+                            children: [
+                              Table(
+                                border: TableBorder.all(),
+                                children: [
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc != 0 && imc < 20
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            height: 32.0,
+                                            alignment: Alignment.center,
+                                            child: Text("< 20,0")),
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("Abaixo do Peso")),
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc >= 20.0 && imc < 24.9
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("20,0 - 24,9")),
+                                        Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            height: 32.0,
+                                            child: Text("Ideal"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc >= 25.0 && imc < 29.9
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                          height: 32.0,
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 4.0),
+                                          child: Text("25,0 - 29,9"),
+                                        ),
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("Sobrepeso"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc >= 30.0 && imc < 34.9
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("30,0 - 34,9")),
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("Obesidade grau 1"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc > 35.0 && imc < 43.0
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.center,
+                                            child: Text("35,0 - 43.0")),
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.centerLeft,
+                                            child:
+                                                Text("Obesidade severa grau 2"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc > 43.0
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.center,
+                                            child: Text("> 43")),
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.centerLeft,
+                                            child:
+                                                Text("Obesidade móbida grau 3"))
+                                      ]),
+                                ],
+                              ),
+                              Positioned(
+                                  right: 0,
+                                  bottom: 250,
+                                  child: Text(
+                                    'Arraste para o lado >>> ',
+                                    style: TextStyle(color: Colors.grey),
+                                  )
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('O valor de referencia é para: '),
+                          Text(
+                            'Mulheres',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Stack(
+                            children: [
+                              Table(
+                                border: TableBorder.all(),
+                                children: [
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc != 0 && imc < 18.5
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            height: 32.0,
+                                            alignment: Alignment.center,
+                                            child: Text("< 18,5")),
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("Abaixo do Peso")),
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc >= 18.5 && imc < 24.9
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("18,5 - 24,9")),
+                                        Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            height: 32.0,
+                                            child: Text("Ideal"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc >= 25.0 && imc < 29.9
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                          height: 32.0,
+                                          alignment: Alignment.center,
+                                          padding:
+                                              EdgeInsets.symmetric(horizontal: 4.0),
+                                          child: Text("25,0 - 29,9"),
+                                        ),
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("Sobrepeso"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc >= 30.0 && imc < 34.9
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("30,0 - 34,9")),
+                                        Container(
+                                            height: 32.0,
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text("Obesidade grau 1"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc > 35.0 && imc < 39.9
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.center,
+                                            child: Text("35,0 - 39,9")),
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.centerLeft,
+                                            child: Text("Obesidade severa grau 2"))
+                                      ]),
+                                  TableRow(
+                                      decoration: BoxDecoration(
+                                          color: imc > 40.0
+                                              ? Colors.green
+                                              : Colors.white),
+                                      children: [
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.center,
+                                            child: Text("> 40")),
+                                        Container(
+                                            height: 32.0,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            alignment: Alignment.centerLeft,
+                                            child: Text("Obesidade móbida grau 3"))
+                                      ]),
+                                ],
+                              ),
+                              Positioned(
+                                  left: 0,
+                                  bottom: 250,
+                                  child: Text(
+                                    '<<< Arraste para o lado ',
+                                    style: TextStyle(color: Colors.grey),
+                                  )
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
               ),
             )
           ],
