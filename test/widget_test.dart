@@ -13,18 +13,18 @@ import 'package:calulate_imc/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(HomePage());
 
     // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Seu IMC é: 0.0'), findsOneWidget);
 
     // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.enterText(find.byKey(Key('Peso (Kg)')), '1');
+    await tester.enterText(find.byKey(Key('Altura (m)')), '1');
+
+    await tester.tap(find.byKey(Key('Calcular')));
 
     // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('1.00'), findsNothing);
   });
 }
